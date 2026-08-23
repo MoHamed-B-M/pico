@@ -9,6 +9,7 @@ It exists because "free image compressor" usually means sending your photos to s
 [![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Stars](https://img.shields.io/github/stars/MoHamed-B-M/pico?style=for-the-badge&color=yellow&logo=github)](https://github.com/MoHamed-B-M/pico/stargazers)
 [![Visitors](https://komarev.com/ghpvc/?username=MoHamed-B-M&repo=pico&color=22c55e&style=for-the-badge&label=visitors)](https://github.com/MoHamed-B-M/pico)
+[![Website](https://img.shields.io/badge/Website-mohamed--b--m.github.io-22c55e?style=for-the-badge&logo=github&logoColor=white)](https://mohamed-b-m.github.io/pico/)
 
 ### Built with
 
@@ -20,8 +21,6 @@ It exists because "free image compressor" usually means sending your photos to s
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
-
-Website: [mohamed-b-m.github.io/pico](https://mohamed-b-m.github.io/pico/)
 
 ## Features
 
