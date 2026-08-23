@@ -24,18 +24,24 @@ It exists because "free image compressor" usually means sending your photos to s
 
 ### GitHub Insights
 
-<a href="https://github.com/MoHamed-B-M/pico">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=MoHamed-B-M&show_icons=true&theme=chartreuse-dark&hide_border=true&bg_color=0d1117&title_color=22c55e&icon_color=22c55e&text_color=c9d1d9&ring_color=22c55e&include_all_commits=true&count_private=true" />
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=MoHamed-B-M&layout=compact&theme=chartreuse-dark&hide_border=true&bg_color=0d1117&title_color=22c55e&text_color=c9d1d9&langs_count=8" />
-</a>
-
-<a href="https://github.com/MoHamed-B-M">
-  <img height="170em" src="https://github-readme-streak-stats.herokuapp.com/?user=MoHamed-B-M&theme=chartreuse-dark&hide_border=true&background=0d1117&ring=22c55e&fire=22c55e&currStreakLabel=22c55e&sideLabels=c9d1d9&dates=8b949e" />
-</a>
+<p align="center">
+  <a href="https://github.com/MoHamed-B-M/pico">
+    <img height="180em" src="https://github-readme-stats.vercel.app/api?username=MoHamed-B-M&show_icons=true&theme=chartreuse-dark&hide_border=true&bg_color=0d1117&title_color=22c55e&icon_color=22c55e&text_color=c9d1d9&include_all_commits=true&count_private=true" />
+  </a>
+  <a href="https://github.com/MoHamed-B-M/pico">
+    <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=MoHamed-B-M&layout=compact&theme=chartreuse-dark&hide_border=true&bg_color=0d1117&title_color=22c55e&text_color=c9d1d9&langs_count=8" />
+  </a>
+</p>
 
 <p align="center">
   <a href="https://github.com/MoHamed-B-M">
-    <img src="https://github-readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=1000&color=22C55E&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=100&lines=Full+Stack+Developer;Open+Source+Enthusiast;Always+Learning+%F0%9F%9A%80" alt="Typing SVG" />
+    <img src="https://github-readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=1000&color=22C55E&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=100&lines=Full+Stack+Developer;Open+Source+Enthusiast;Always+Learning" alt="Typing SVG" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/MoHamed-B-M">
+    <img src="https://github-contribution-grid.vercel.app/api?username=MoHamed-B-M&theme=dark&border=none" alt="GitHub Contribution Grid" />
   </a>
 </p>
 
