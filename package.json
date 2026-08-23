@@ -1,6 +1,6 @@
 {
   "name": "pico-img",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Local-first image compressor & TinyPNG alternative — compress JPG, PNG, WebP & AVIF locally.",
   "type": "module",
   "main": "server.js",
@@ -41,7 +41,7 @@
     "open": "^10.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "sharp": "^0.33.5"
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@gsap/react": "^2.1.2",
