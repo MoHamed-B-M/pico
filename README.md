@@ -1,90 +1,70 @@
-<div align="center">
+# Pico
 
-# ⚡ PICO
+A local-first image compressor for JPG, PNG, WebP and AVIF. Pico runs a small Express server on your machine, compresses everything with Sharp, and shows the results in a terminal style web UI. Nothing is uploaded, there are no accounts, and nothing leaves your computer.
 
-### *TinyPNG Alternative — 100% Local, 100% Private*
+It exists because "free image compressor" usually means sending your photos to someone else's server. Pico does the same work offline.
 
-**Local-first image compressor · Sharp-powered · Zero cloud · Zero telemetry**
-
-[![npm version](https://img.shields.io/npm/v/pico-img?style=for-the-badge&color=22c55e&logo=npm)](https://www.npmjs.com/package/pico-img)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=for-the-badge)](https://www.npmjs.com/package/pico-img)
-[![Stars](https://img.shields.io/github/stars/MoHamed-B-M/pico?style=for-the-badge&logo=github&color=yellow)](https://github.com/MoHamed-B-M/pico/stargazers)
-[![Live Site](https://img.shields.io/badge/🌐_website-mohamed--b--m.github.io%2Fpico-22c55e?style=for-the-badge&logo=github&logoColor=white)](https://mohamed-b-m.github.io/pico/)
-
-> 🌐 **Official website & docs:** [https://mohamed-b-m.github.io/pico](https://mohamed-b-m.github.io/pico/)
-
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/MoHamed-B-M/pico/pulls)
+[![npm version](https://img.shields.io/npm/v/pico-img?style=flat-square&color=22c55e)](https://www.npmjs.com/package/pico-img)
+[![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Stars](https://img.shields.io/github/stars/MoHamed-B-M/pico?style=flat-square&color=yellow&logo=github)](https://github.com/MoHamed-B-M/pico/stargazers)
 [![Visitors](https://komarev.com/ghpvc/?username=MoHamed-B-M&repo=pico&color=22c55e&style=flat-square&label=visitors)](https://github.com/MoHamed-B-M/pico)
-[![Maintained](https://img.shields.io/badge/maintained-yes-brightgreen.svg?style=flat-square)](https://github.com/MoHamed-B-M/pico/graphs/commit-activity)
-[![No Cloud](https://img.shields.io/badge/cloud-none-critical?style=flat-square)](#-why-pico)
-[![Tracking](https://img.shields.io/badge/telemetry-zero-critical?style=flat-square)](#-why-pico)
 
-</div>
+Website: [mohamed-b-m.github.io/pico](https://mohamed-b-m.github.io/pico/)
 
----
+## Features
 
-## 📖 About
+- Compresses JPG, JPEG, PNG, WebP and AVIF, up to 25 MB per file and 30 files per batch
+- Uses mozjpeg for JPEG, compression level 9 with palette mode for PNG, and tuned encoders for WebP and AVIF
+- Quality control from 10 to 100, from tiny files to near-lossless
+- Shows original size, compressed size and savings for every file
+- Keeps the original format, respects EXIF orientation
+- Deletes temporary uploads automatically after processing
+- REST API if you prefer scripts over clicking
 
-**Pico** is a free, open-source, **local-first image compression tool** built for developers
-who care about privacy. Compress **JPG, JPEG, PNG, WebP, and AVIF** images directly on your
-machine using a blazing-fast **Express + Sharp** pipeline — with a beautiful
-**React + Tailwind CSS + GSAP** terminal-style web UI.
+## Requirements
 
-> 🔒 **Your images never leave localhost.** No uploads. No accounts. No limits. No tracking.
-> Perfect for developers, designers, and anyone searching for a *TinyPNG alternative that
-> respects privacy*, an *offline image optimizer*, or a *self-hosted image compressor CLI*.
+- Node.js 18.17 or newer
+- A browser, for the web UI
 
----
+## Installation
 
-## ✨ Features
-
-| | Feature | Description |
-|---|---|---|
-| 🖼️ | **Drag & Drop UI** | Interactive dropzone with GSAP glow feedback and handwriting intro animation |
-| 🎚️ | **Quality Control** | Real-time slider (10–100%) — from *tiny files* to *lossless-ish* |
-| 🧬 | **Best-in-class Codecs** | `mozjpeg` for JPG, `compressionLevel: 9` + palette PNG, WebP & AVIF effort-tuned |
-| 📦 | **Batch Processing** | Compress up to 30 images (25 MB each) in one request |
-| 📊 | **Live Results** | Per-file before/after sizes, `−XX%` savings badges, instant downloads |
-| 🧹 | **Auto Cleanup** | Temporary uploads deleted automatically — no disk bloat |
-| 🔌 | **REST API** | `POST /api/compress` — scriptable from curl, scripts, CI pipelines |
-| 💻 | **CLI + Web** | One command launches a local web app and opens your browser |
-
----
-
-## 🚀 Quick Start
-
-### ⚡ Instant run (no install)
+Run it once without installing:
 
 ```bash
 npx pico-img
 ```
 
-### 📦 Install globally (recommended)
+Or install it globally:
 
 ```bash
 npm install -g pico-img
 pico
 ```
 
-Your browser opens at **http://localhost:3000** automatically. That's it.
+The server starts on port 3000 and your browser opens automatically.
 
-### 🛠️ From source (for contributors)
+To work on the source code instead:
 
 ```bash
 git clone https://github.com/MoHamed-B-M/pico.git
 cd pico
 npm install
-npm run build     # builds the React frontend into client/dist
-npm run dev       # dev server with HMR on :3000
+npm run build
+npm run dev
 ```
 
-### CLI options
+## Usage
+
+1. Run `pico` in a terminal
+2. Drag your images into the upload card, or click to browse
+3. Pick a quality level. 10 gives the smallest files, 100 keeps the most detail
+4. Press compress and wait for the results
+5. Download what you need
+
+### Command line options
 
 ```text
-⚡ pico - Local Image Compressor
-
 Usage: pico [options]
 
 Options:
@@ -93,63 +73,44 @@ Options:
   -h, --help            Show this help
 ```
 
----
-
-## 🖥️ How to Use
-
-1. **Launch** — run `pico` in any terminal
-2. **Drop** — drag & drop images (or click *Choose files*) into the upload card
-3. **Tune** — move the quality slider: `10` = tiny files · `75` = balanced · `100` = best fidelity
-4. **Compress** — hit `[ COMPRESS ]` and watch the live pixel-grid loader
-5. **Save** — review savings badges (`−79%`) and click `[ save ]` to download
-
----
-
-## 📈 Real Benchmarks
-
-Measured with the default pipeline on a 1600×1200 test image at quality 60:
-
-| Format | Before | After | Saved |
-|:------:|-------:|------:|:-----:|
-| JPG | 1,823,679 B (1.82 MB) | 383,140 B (383 KB) | **−79%** |
-| PNG | 113,649 B (113 KB) | 18,325 B (18 KB) | **−84%** |
-
----
-
-## ⚙️ How It Works
+## How it works
 
 ```mermaid
 flowchart LR
-    A[🖱️ Drop images] --> B[📥 Multer\nuploads/ temp store]
-    B --> C{Sharp pipeline}
-    C -->|JPG| D[mozjpeg\nquality + 4:2:0]
+    A[Drop images] --> B[Multer temp store]
+    B --> C{Sharp}
+    C -->|JPG| D[mozjpeg]
     C -->|PNG| E[level 9 + palette]
     C -->|WebP| F[effort 5]
     C -->|AVIF| G[effort 4]
-    D --> H[💾 compressed/]
+    D --> H[compressed folder]
     E --> H
     F --> H
     G --> H
-    H --> I[📊 JSON stats\nsizes + savings %]
-    H --> J[⬇️ Download]
-    B -. auto-delete .-> K[🧹 clean uploads/]
+    H --> I[JSON stats and downloads]
+    B -. auto delete .-> J[cleanup]
 ```
 
-All processing happens **in-process via libvips (Sharp)** — no external services,
-no worker queues, no cloud functions. EXIF orientation is respected automatically.
+Compression happens in-process through libvips. There are no workers, queues or external services involved.
 
----
+## Results you can expect
 
-## 🔌 REST API
+Measured on a 1600x1200 test image at quality 60:
 
-### `POST /api/compress`
+| Format | Before | After | Saved |
+|--------|-------:|------:|------:|
+| JPG | 1.82 MB | 383 KB | 79% |
+| PNG | 113 KB | 18 KB | 84% |
 
-Multipart form: `images` (repeatable file field), `quality` (integer 10–100).
+## API
+
+Compress files with a POST request. The `images` field is repeatable, `quality` accepts an integer from 10 to 100.
 
 ```bash
-curl -X POST -F "images=@photo.jpg" -F "images=@graphic.png" -F "quality=60" \
-  http://localhost:3000/api/compress
+curl -X POST -F "images=@photo.jpg" -F "quality=60" http://localhost:3000/api/compress
 ```
+
+The response contains one entry per file:
 
 ```json
 {
@@ -157,9 +118,9 @@ curl -X POST -F "images=@photo.jpg" -F "images=@graphic.png" -F "quality=60" \
   "quality": 60,
   "files": [
     {
-      "id": "d38c9894-fae2-4933-ba00-27f2fc496bea",
-      "originalName": "photo-test.jpg",
-      "downloadUrl": "/compressed/d38c9894…__photo-test.compressed.jpg",
+      "id": "d38c9894",
+      "originalName": "photo.jpg",
+      "downloadUrl": "/compressed/d38c9894__photo.compressed.jpg",
       "format": "JPG",
       "quality": 60,
       "originalSize": 1823679,
@@ -170,76 +131,39 @@ curl -X POST -F "images=@photo.jpg" -F "images=@graphic.png" -F "quality=60" \
 }
 ```
 
-Failed files are reported under `failures` without aborting the batch.
-Health probe: `GET /api/health`.
+Files that fail are listed under `failures` and do not stop the rest of the batch. A health probe is available at `GET /api/health`.
 
----
-
-## 📁 Project Structure
+## Project structure
 
 ```text
-pico-img/
-├── server.js               # Express server & Sharp compression pipeline
-├── vite.config.js          # Vite (root = client/, middleware mode for dev)
+pico/
+├── server.js               Express server and Sharp pipeline
+├── vite.config.js          Vite config, client root
 ├── client/
 │   ├── index.html
 │   ├── tailwind.config.js
 │   └── src/
-│       ├── components/     # DoodleDropzone, QualitySlider, ResultsList, ui/
-│       ├── animations/     # GSAP hooks (intro, stagger)
-│       ├── tokens.css      # design tokens (phosphor terminal theme)
+│       ├── components/     Upload card, quality slider, results
+│       ├── animations/     GSAP hooks
+│       ├── tokens.css      Design tokens
 │       └── App.jsx
-├── uploads/                # temp storage (auto-cleaned)
-└── compressed/             # compressed output (served statically)
+├── uploads/                Temporary storage, auto cleaned
+└── compressed/             Output folder, served statically
 ```
 
-**Tech stack:** Node.js · Express · Sharp (libvips) · Multer · React 18 · Vite ·
-Tailwind CSS · GSAP · framer-motion · opentype.js
+## Contributing
 
----
+Pull requests are welcome. Fork the repo, make your changes, and open a PR. Some ideas that would be nice: resize presets, a CLI-only batch mode, GIF support, a Docker image.
 
-## 🔍 Why Pico?
+## License
 
-| | Pico | TinyPNG & cloud tools |
-|---|---|---|
-| Privacy | 🟢 100% local | 🔴 images uploaded to servers |
-| Limits | 🟢 none | 🔴 ~20 images / batch caps |
-| Cost | 🟢 free, MIT | 🟡 freemium / API pricing |
-| Offline | 🟢 works | 🔴 requires internet |
-| Tracking | 🟢 zero telemetry | 🔴 analytics |
+This project is licensed under the MIT license with an attribution clause. See [LICENSE](LICENSE) for details.
 
-**Keywords:** image compressor, image optimizer, compress jpg, compress png,
-webp converter, avif compressor, tinypng alternative, local image compression,
-privacy-first, offline tools, sharp nodejs, express image api, self-hosted,
-image optimization cli, batch image compressor, developer tools.
+## Author
 
----
+Made by Hamma, IT student.
 
-## 🤝 Contributing
+[![Gmail](https://img.shields.io/badge/Gmail-benmohamedm715%40gmail.com-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:benmohamedm715@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-MoHamed--B--M-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/MoHamed-B-M)
 
-PRs are welcome! Fork → branch → commit → open a Pull Request.
-Ideas: GIF support, resize presets, CLI-only batch mode, Docker image.
-
----
-
-## 📄 License
-
-[MIT License](LICENSE) © 2026 **Mohamed Ben Mohamed** — free for personal, educational,
-and commercial use, provided the author is credited in copies and derivative works.
-
----
-
-> **Disclaimer:** TinyPNG is a registered trademark of Tinify B.V. Pico is an independent, open-source project and is not affiliated with or endorsed by Tinify.
-
-<div align="center">
-
-## 👨‍💻 Made by Hamma
-
-**IT Student · Developer · Privacy enthusiast**
-
-[![Gmail](https://img.shields.io/badge/Gmail-benmohamedm715%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:benmohamedm715@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-MoHamed--B--M-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MoHamed-B-M)
-
-⭐ **If Pico saved you disk space, please star the repo — it helps a lot!** ⭐
-
-</div>
+Disclaimer: TinyPNG is a registered trademark of Tinify B.V. Pico is an independent, open-source project and is not affiliated with or endorsed by Tinify.
