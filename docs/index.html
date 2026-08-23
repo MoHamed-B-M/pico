@@ -1,150 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pico ⚡ — Local-First Image Compressor | TinyPNG Alternative, 100% Private</title>
-  <meta name="description" content="Pico is a free, open-source, local-first image compressor for JPG, JPEG, PNG, WebP & AVIF. Powered by Sharp (mozjpeg) with a React terminal UI, CLI and REST API. No cloud, no uploads, no limits — the TinyPNG alternative that respects your privacy." />
-  <meta name="keywords" content="pico, pico-img, image compressor, image optimizer, tinypng alternative, compress jpg, compress png, webp compressor, avif compressor, local image compression, offline image tool, privacy-first, sharp nodejs, express image api, self-hosted image optimizer, batch image compressor, cli image compression, developer tools" />
-  <meta name="author" content="Mohamed Ben Mohamed" />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-  <link rel="canonical" href="https://mohamed-b-m.github.io/pico/" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pico ⚡ — Local-First Image Compressor | TinyPNG Alternative, 100% Private</title>
+    <meta name="description" content="Pico is a free, open-source, local-first image compressor for JPG, JPEG, PNG, WebP & AVIF. Powered by Sharp (mozjpeg) with a React terminal UI, CLI and REST API. No cloud, no uploads, no limits — the TinyPNG alternative that respects your privacy." />
+    <meta name="keywords" content="pico, pico-img, image compressor, image optimizer, tinypng alternative, compress jpg, compress png, webp compressor, avif compressor, local image compression, offline image tool, privacy-first, sharp nodejs, express image api, self-hosted image optimizer, batch image compressor, cli image compression, developer tools" />
+    <meta name="author" content="Mohamed Ben Mohamed" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href="https://mohamed-b-m.github.io/pico/" />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Pico ⚡" />
-  <meta property="og:title" content="Pico ⚡ — TinyPNG Alternative, 100% Local & Private" />
-  <meta property="og:description" content="Compress JPG, PNG, WebP & AVIF images on your own machine. Sharp-powered, CLI + web app + REST API. No cloud, no limits, zero telemetry." />
-  <meta property="og:url" content="https://mohamed-b-m.github.io/pico/" />
-  <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pico ⚡" />
+    <meta property="og:title" content="Pico ⚡ — TinyPNG Alternative, 100% Local & Private" />
+    <meta property="og:description" content="Compress JPG, PNG, WebP & AVIF images on your own machine. Sharp-powered, CLI + web app + REST API. No cloud, no limits, zero telemetry." />
+    <meta property="og:url" content="https://mohamed-b-m.github.io/pico/" />
+    <meta property="og:locale" content="en_US" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Pico ⚡ — TinyPNG Alternative, 100% Local" />
-  <meta name="twitter:description" content="Free open-source local image compressor. JPG/PNG/WebP/AVIF via Sharp. CLI + web + REST API. No cloud, no telemetry." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Pico ⚡ — TinyPNG Alternative, 100% Local" />
+    <meta name="twitter:description" content="Free open-source local image compressor. JPG/PNG/WebP/AVIF via Sharp. CLI + web + REST API. No cloud, no telemetry." />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚡%3C/text%3E%3C/svg%3E" />
-
-  <!-- Structured data for Google rich results -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Pico (pico-img)",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "Windows, macOS, Linux",
-    "description": "Local-first image compressor and TinyPNG alternative. Compresses JPG, PNG, WebP and AVIF images entirely on your machine using Sharp — no cloud, no uploads, no telemetry.",
-    "softwareVersion": "1.0.0",
-    "license": "https://opensource.org/licenses/MIT",
-    "author": {
-      "@type": "Person",
-      "name": "Mohamed Ben Mohamed"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "url": "https://mohamed-b-m.github.io/pico/",
-    "codeRepository": "https://github.com/MoHamed-B-M/pico",
-    "installUrl": "https://www.npmjs.com/package/pico-img",
-    "keywords": "image compressor, tinypng alternative, sharp, cli, local-first, privacy, webp, avif, offline-tools"
-  }
-  </script>
-
-  <style>
-    :root {
-      --green: #4ade80;
-      --green-mid: #86efac;
-      --green-dim: #4b6355;
-      --bg: #000;
-      --panel: #0b0f0c;
-      --panel-raised: #121712;
-      --border: #1f2b22;
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Pico (pico-img)",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Windows, macOS, Linux",
+      "description": "Local-first image compressor and TinyPNG alternative. Compresses JPG, PNG, WebP and AVIF images entirely on your machine using Sharp — no cloud, no uploads, no telemetry.",
+      "softwareVersion": "1.0.0",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": { "@type": "Person", "name": "Mohamed Ben Mohamed" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "url": "https://mohamed-b-m.github.io/pico/",
+      "codeRepository": "https://github.com/MoHamed-B-M/pico",
+      "installUrl": "https://www.npmjs.com/package/pico-img",
+      "keywords": "image compressor, tinypng alternative, sharp, cli, local-first, privacy, webp, avif, offline-tools"
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--green);
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    a { color: var(--green-mid); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: 860px; margin: 0 auto; padding: 48px 20px 64px; }
-    .prompt { font-size: 15px; }
-    .prompt .caret::after { content: '▮'; animation: blink 1s steps(2, start) infinite; }
-    @keyframes blink { to { visibility: hidden; } }
-    h1 { font-size: clamp(40px, 8vw, 72px); letter-spacing: -0.03em; margin: 24px 0 8px; color: #e7f7ec; }
-    .tagline { color: var(--green-dim); margin-bottom: 32px; }
-    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
-    .badge { border: 1px solid var(--border); background: var(--panel); padding: 4px 10px; font-size: 11px; color: var(--green-mid); }
-    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--green-mid); border-top: 1px solid var(--border); padding-top: 24px; margin: 40px 0 16px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-    .card { border: 1px solid var(--border); background: var(--panel); padding: 16px; }
-    .card b { color: #e7f7ec; display: block; margin-bottom: 4px; }
-    .card span { color: var(--green-dim); font-size: 12px; }
-    pre {
-      border: 1px solid var(--border); background: var(--panel); padding: 14px 16px;
-      overflow-x: auto; font-size: 13px; margin: 12px 0; position: relative;
-    }
-    pre::before { content: attr(data-label); display: block; color: var(--green-dim); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-    .btn { display: inline-block; border: 1px solid var(--green); background: var(--green); color: #06130a; padding: 10px 20px; font-weight: 700; margin: 8px 8px 0 0; }
-    .btn.ghost { background: transparent; color: var(--green-mid); }
-    .btn:hover { text-decoration: none; filter: brightness(1.1); }
-    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
-    th, td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; }
-    th { color: var(--green-mid); font-weight: 500; }
-    td { color: var(--green-dim); }
-    footer { border-top: 1px solid var(--border); margin-top: 56px; padding-top: 20px; color: var(--green-dim); font-size: 12px; text-align: center; }
-    .disclaimer { font-size: 11px; color: var(--green-dim); margin-top: 12px; }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <p class="prompt">&gt; pico --local --no-cloud --private <span class="caret"></span></p>
-    <h1>Pico ⚡</h1>
-    <p class="tagline">Local-first image compressor. No cloud, no limits, 100% private.</p>
+    </script>
 
-    <div class="badges">
-      <span class="badge">npm i -g pico-img</span>
-      <span class="badge">MIT License</span>
-      <span class="badge">Node ≥ 18</span>
-      <span class="badge">Windows · macOS · Linux</span>
-      <span class="badge">zero telemetry</span>
-    </div>
-
-    <h2>Why Pico</h2>
-    <div class="grid">
-      <div class="card"><b>🔒 100% Local</b><span>Images are compressed on your machine via Sharp (libvips) — nothing is ever uploaded.</span></div>
-      <div class="card"><b>🧬 Best codecs</b><span>mozjpeg for JPG, level-9 palette PNG, effort-tuned WebP & AVIF.</span></div>
-      <div class="card"><b>🎚️ Quality 10–100</b><span>Real-time slider from tiny files to lossless-ish fidelity.</span></div>
-      <div class="card"><b>🔌 CLI + REST API</b><span>Scriptable: POST /api/compress returns sizes & savings as JSON.</span></div>
-      <div class="card"><b>📊 Live results</b><span>Before/after sizes and −XX% savings badges with instant downloads.</span></div>
-      <div class="card"><b>🧹 Auto cleanup</b><span>Temp uploads are deleted automatically — zero disk bloat.</span></div>
-    </div>
-
-    <h2>Install</h2>
-    <pre data-label="instant run">npx pico-img</pre>
-    <pre data-label="global install">npm install -g pico-img
-pico          # opens http://localhost:3000</pre>
-
-    <h2>Real savings</h2>
-    <table>
-      <tr><th>Format</th><th>Before</th><th>After</th><th>Saved</th></tr>
-      <tr><td>JPG</td><td>1.82 MB</td><td>383 KB</td><td>−79%</td></tr>
-      <tr><td>PNG</td><td>113 KB</td><td>18 KB</td><td>−84%</td></tr>
-    </table>
-
-    <h2>Get started</h2>
-    <a class="btn" href="https://github.com/MoHamed-B-M/pico">★ Star on GitHub</a>
-    <a class="btn ghost" href="https://www.npmjs.com/package/pico-img">View on npm</a>
-
-    <footer>
-      <p>Made by <b>Mohamed Ben Mohamed</b> (Hamma) · IT Student · <a href="mailto:benmohamedm715@gmail.com">benmohamedm715@gmail.com</a></p>
-      <p class="disclaimer">Disclaimer: TinyPNG is a registered trademark of Tinify B.V. Pico is an independent, open-source project and is not affiliated with or endorsed by Tinify.</p>
-    </footer>
-  </div>
-</body>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚡%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="./assets/index-DalI81Ky.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CnIFTEAB.css">
+  </head>
+  <body class="min-h-screen bg-surf-base font-mono text-ink antialiased">
+    <div id="root"></div>
+  </body>
 </html>
