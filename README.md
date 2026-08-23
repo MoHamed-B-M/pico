@@ -137,18 +137,18 @@ Files that fail are listed under `failures` and do not stop the rest of the batc
 
 ```text
 pico/
-├── server.js               Express server and Sharp pipeline
-├── vite.config.js          Vite config, client root
-├── client/
-│   ├── index.html
-│   ├── tailwind.config.js
-│   └── src/
-│       ├── components/     Upload card, quality slider, results
-│       ├── animations/     GSAP hooks
-│       ├── tokens.css      Design tokens
-│       └── App.jsx
-├── uploads/                Temporary storage, auto cleaned
-└── compressed/             Output folder, served statically
+|-- server.js               Express server and Sharp pipeline
+|-- vite.config.js          Vite config, client root
+|-- client/
+|   |-- index.html
+|   |-- tailwind.config.js
+|   +-- src/
+|       |-- components/     Upload card, quality slider, results
+|       |-- animations/     GSAP hooks
+|       |-- tokens.css      Design tokens
+|       +-- App.jsx
+|-- uploads/                Temporary storage, auto cleaned
++-- compressed/             Output folder, served statically
 ```
 
 ## Contributing
