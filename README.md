@@ -70,7 +70,7 @@ Your browser opens at **http://localhost:3000** automatically. That's it.
 
 ```bash
 git clone https://github.com/MoHamed-B-M/pico.git
-cd pico-img
+cd pico
 npm install
 npm run build     # builds the React frontend into client/dist
 npm run dev       # dev server with HMR on :3000
@@ -224,6 +224,8 @@ Ideas: GIF support, resize presets, CLI-only batch mode, Docker image.
 and commercial use, provided the author is credited in copies and derivative works.
 
 ---
+
+> **Disclaimer:** TinyPNG is a registered trademark of Tinify B.V. Pico is an independent, open-source project and is not affiliated with or endorsed by Tinify.
 
 <div align="center">
 

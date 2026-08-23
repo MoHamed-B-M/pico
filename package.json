@@ -1,7 +1,7 @@
 {
   "name": "pico-img",
   "version": "1.0.0",
-  "description": "Local-first image compressor (TinyPNG alternative)",
+  "description": "Local-first image compressor & TinyPNG alternative — compress JPG, PNG, WebP & AVIF locally.",
   "type": "module",
   "main": "server.js",
   "bin": {
@@ -13,14 +13,16 @@
     "README.md"
   ],
   "keywords": [
-    "cli",
+    "pico",
+    "pico-img",
     "image-compressor",
-    "local",
-    "local-first",
     "tinypng-alternative",
     "sharp",
-    "pico",
-    "privacy"
+    "cli",
+    "express",
+    "react",
+    "local-first",
+    "offline-tools"
   ],
   "license": "MIT",
   "engines": {
@@ -54,5 +56,14 @@
   "allowScripts": {
     "sharp@0.33.5": true,
     "esbuild@0.25.12": true
-  }
+  },
+  "author": "Mohamed Ben Mohamed",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoHamed-B-M/pico.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MoHamed-B-M/pico/issues"
+  },
+  "homepage": "https://github.com/MoHamed-B-M/pico#readme"
 }
