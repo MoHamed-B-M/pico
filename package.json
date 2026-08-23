@@ -1,0 +1,58 @@
+{
+  "name": "pico-img",
+  "version": "1.0.0",
+  "description": "Local-first image compressor (TinyPNG alternative)",
+  "type": "module",
+  "main": "server.js",
+  "bin": {
+    "pico": "server.js"
+  },
+  "files": [
+    "server.js",
+    "client/dist",
+    "README.md"
+  ],
+  "keywords": [
+    "cli",
+    "image-compressor",
+    "local",
+    "local-first",
+    "tinypng-alternative",
+    "sharp",
+    "pico",
+    "privacy"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "cross-env PICO_DEV=1 node server.js",
+    "build": "vite build",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "express": "^4.21.2",
+    "multer": "^2.2.0",
+    "open": "^10.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@gsap/react": "^2.1.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "gsap": "^3.12.7",
+    "playwright-core": "^1.58.2",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.4.3"
+  },
+  "allowScripts": {
+    "sharp@0.33.5": true,
+    "esbuild@0.25.12": true
+  }
+}

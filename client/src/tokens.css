@@ -1,0 +1,54 @@
+/* Pico ⚡ — Hallmark terminal theme tokens.
+   Every style must reference these by name; no inline raw values. */
+:root {
+  /* ---- color ---- */
+  --color-text-primary: oklch(0.86 0.16 138);
+  --color-text-secondary: oklch(0.78 0.14 138);
+  --color-text-tertiary: oklch(0.58 0.09 140);
+  --color-text-inverse: oklch(0.78 0.19 138);
+
+  --color-surface-base: #000000;
+  --color-surface-muted: oklch(0.11 0.018 145);
+  --color-surface-raised: oklch(0.15 0.022 145);
+  --color-border-muted: oklch(0.28 0.03 140);
+
+  /* text colour on accent-filled surfaces */
+  --color-accent-ink: #06130a;
+  --color-error: oklch(0.7 0.19 25);
+
+  /* LoadingState compatibility aliases */
+  --foreground: var(--color-text-primary);
+  --background: var(--color-surface-base);
+  --muted-foreground: var(--color-text-tertiary);
+
+  /* ---- font ---- */
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* ---- type scale (brand spec) ---- */
+  --text-sm: 10px;
+  --text-md: 11px;
+  --text-lg: 12px;
+  --text-xl: 13px;
+  --text-2xl: 14px;
+  --text-3xl: 15px;
+  --text-4xl: 15.2px;
+  --text-display: clamp(44px, 9vw, 92px); /* lifted named token for hero */
+
+  /* ---- spacing (brand spec + role-named additions) ---- */
+  --space-1: 1.44px;
+  --space-2: 2.88px;
+  --space-3: 4px;
+  --space-4: 5.4px;
+  --space-5: 5.6px;
+  --space-6: 6.4px;
+  --space-7: 8px;
+  --space-8: 8.8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  /* ---- motion ---- */
+  --dur-instant: 120ms;
+  --dur-fast: 220ms;
+  --dur-normal: 360ms;
+}

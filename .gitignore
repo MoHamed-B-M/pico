@@ -1,0 +1,14 @@
+node_modules/
+client/dist/
+uploads/*
+compressed/*
+!uploads/.gitkeep
+!compressed/.gitkeep
+*.log
+
+.agents/
+.claude/
+.opencode/
+skills-lock.json
+bun.lock
+site/
