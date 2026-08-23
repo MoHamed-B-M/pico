@@ -4,11 +4,22 @@ A local-first image compressor for JPG, PNG, WebP, AVIF and TIFF. Pico runs a sm
 
 It exists because "free image compressor" usually means sending your photos to someone else's server. Pico does the same work offline.
 
-[![npm version](https://img.shields.io/npm/v/pico-img?style=flat-square&color=22c55e)](https://www.npmjs.com/package/pico-img)
-[![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Stars](https://img.shields.io/github/stars/MoHamed-B-M/pico?style=flat-square&color=yellow&logo=github)](https://github.com/MoHamed-B-M/pico/stargazers)
-[![Visitors](https://komarev.com/ghpvc/?username=MoHamed-B-M&repo=pico&color=22c55e&style=flat-square&label=visitors)](https://github.com/MoHamed-B-M/pico)
+[![npm version](https://img.shields.io/npm/v/pico-img?style=for-the-badge&color=22c55e)](https://www.npmjs.com/package/pico-img)
+[![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Stars](https://img.shields.io/github/stars/MoHamed-B-M/pico?style=for-the-badge&color=yellow&logo=github)](https://github.com/MoHamed-B-M/pico/stargazers)
+[![Visitors](https://komarev.com/ghpvc/?username=MoHamed-B-M&repo=pico&color=22c55e&style=for-the-badge&label=visitors)](https://github.com/MoHamed-B-M/pico)
+
+### Built with
+
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![Sharp](https://img.shields.io/badge/Sharp-22c55e?style=for-the-badge&logo=sharp&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 
 Website: [mohamed-b-m.github.io/pico](https://mohamed-b-m.github.io/pico/)
 
