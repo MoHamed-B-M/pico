@@ -25,12 +25,6 @@ It exists because "free image compressor" usually means sending your photos to s
 ### GitHub Insights
 
 <p align="center">
-  <a href="https://git.io/streak-stats">
-    <img src="https://streak-stats.demolab.com?user=MoHamed-B-M&theme=chartreuse-dark&hide_border=true&background=0d1117&ring=22c55e&fire=22c55e&currStreakLabel=22c55e&sideLabels=c9d1d9&dates=8b949e" alt="GitHub Streak" />
-  </a>
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/github/commit-activity/m/MoHamed-B-M/pico?style=for-the-badge&color=22c55e&label=Commits" alt="Commits" />
   <img src="https://img.shields.io/github/commits-since/MoHamed-B-M/pico/v1.0.2?style=for-the-badge&color=22c55e&label=Since%20v1.0.2" alt="Since v1.0.2" />
   <img src="https://img.shields.io/github/last-commit/MoHamed-B-M/pico?style=for-the-badge&color=22c55e" alt="Last Commit" />
