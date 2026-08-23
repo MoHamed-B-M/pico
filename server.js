@@ -58,12 +58,13 @@ const MAX_FILES = 30;
 const MIN_QUALITY = 10;
 const MAX_QUALITY = 100;
 
-const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.tiff', '.tif']);
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg',
   'image/png',
   'image/webp',
   'image/avif',
+  'image/tiff',
 ]);
 
 /* ------------------------------------------------------------------ */
@@ -112,7 +113,7 @@ const upload = multer({
       return cb(null, true);
     }
     const err = new Error(
-      `Unsupported file type "${ext || file.mimetype}". Allowed: jpg, jpeg, png, webp, avif.`
+      `Unsupported file type "${ext || file.mimetype}". Allowed: jpg, jpeg, png, webp, avif, tiff.`
     );
     err.status = 415;
     cb(err);
@@ -147,6 +148,9 @@ function buildSharpPipeline(inputPath, format, quality) {
       return image.webp({ quality, effort: 5 });
     case '.avif':
       return image.avif({ quality, effort: 4 });
+    case '.tiff':
+    case '.tif':
+      return image.tiff({ quality, compression: 'lzw' });
     default:
       throw new Error(`Unsupported format: ${format}`);
   }
@@ -206,7 +210,7 @@ app.use(express.json());
 
 // Health check
 app.get('/api/health', (_req, res) => {
-  res.json({ success: true, service: 'pico', version: '1.0.0' });
+  res.json({ success: true, service: 'pico', version: '1.0.2' });
 });
 
 // Compress endpoint

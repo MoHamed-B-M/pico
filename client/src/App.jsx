@@ -11,7 +11,7 @@ import HandwritingSvg from './components/ui/handwriting-svg.jsx';
 
 gsap.registerPlugin(useGSAP);
 
-const ALLOWED = /\.(jpe?g|png|webp|avif)$/i;
+const ALLOWED = /\.(jpe?g|png|webp|avif|tiff?)$/i;
 const MAX_BYTES = 25 * 1024 * 1024;
 const TAGLINE = 'Local-first image compressor. No cloud, no limits, 100% private.';
 
@@ -114,6 +114,8 @@ export default function App() {
       setFailures(payload.failures ?? []);
       setStatus('done');
       setQueue([]);
+      // 👇 Show pop-up when compression starts
+      showCompressPopup();
     } catch (err) {
       setError(err.message || 'compression failed — is the pico server still running?');
       setStatus('error');
@@ -128,12 +130,35 @@ export default function App() {
     setStatus('idle');
   }
 
+  // 👉 Auto-update + push notification logic
+  function showCompressPopup() {
+    // 👢 Show a toast-style pop-up during compression
+    const banner = document.createElement('div');
+    banner.className = 'fixed top-4 right-4 bg-surf-base text-ink px-6 py-4 rounded-2xl shadow-lg animate__fadeIn';
+    banner.innerHTML = `
+      <div className="flex items-baseline gap-3">
+        <HandwritingSvg
+          text="⚡"
+          width={32}
+          height={32}
+          fontSize={24}
+          strokeWidth={1.5}
+          duration={1.8}
+        />
+        <span>Compressing images…</span>
+      </div>
+    `;
+    document.body.appendChild(banner);
+    // Remove after 3 seconds
+    setTimeout(() => banner.remove(), 3000);
+  };
+
   const busy = status === 'compressing';
 
   return (
     <div ref={rootRef} className="mx-auto flex min-h-screen w-full max-w-3xl flex-col px-4 pb-16 pt-8 sm:px-6">
       {booting ? (
-        <div className="flex min-h-[70vh] flex-1 flex-col items-center justify-center gap-8">
+        <div className="flex min-h-[70vh] flex-1 items-center justify-center">
           <HandwritingSvg
             text="pico"
             width={320}
@@ -229,7 +254,7 @@ export default function App() {
 
             {/* Ft4 dense colophon */}
             <footer className="border-t border-line pt-4 text-center text-[length:var(--text-md)] leading-relaxed text-ink-dim">
-              pico v1.0.0 · sharp/mozjpeg · localhost only · uploads auto-cleaned · zero telemetry
+              pico v1.0.2 · sharp/mozjpeg · localhost only · uploads auto-cleaned · zero telemetry
             </footer>
           </main>
         </>

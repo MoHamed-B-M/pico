@@ -1,7 +1,7 @@
 {
   "name": "pico-img",
-  "version": "1.0.1",
-  "description": "Local-first image compressor & TinyPNG alternative — compress JPG, PNG, WebP & AVIF locally.",
+  "version": "1.0.2",
+  "description": "Local-first image compressor & TinyPNG alternative — compress JPG, PNG, WebP, AVIF & TIFF locally.",
   "type": "module",
   "main": "server.js",
   "bin": {

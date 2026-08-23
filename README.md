@@ -1,6 +1,6 @@
 # Pico
 
-A local-first image compressor for JPG, PNG, WebP and AVIF. Pico runs a small Express server on your machine, compresses everything with Sharp, and shows the results in a terminal style web UI. Nothing is uploaded, there are no accounts, and nothing leaves your computer.
+A local-first image compressor for JPG, PNG, WebP, AVIF and TIFF. Pico runs a small Express server on your machine, compresses everything with Sharp, and shows the results in a terminal style web UI. Nothing is uploaded, there are no accounts, and nothing leaves your computer.
 
 It exists because "free image compressor" usually means sending your photos to someone else's server. Pico does the same work offline.
 
@@ -14,7 +14,7 @@ Website: [mohamed-b-m.github.io/pico](https://mohamed-b-m.github.io/pico/)
 
 ## Features
 
-- Compresses JPG, JPEG, PNG, WebP and AVIF, up to 25 MB per file and 30 files per batch
+- Compresses JPG, JPEG, PNG, WebP, AVIF and TIFF, up to 25 MB per file and 30 files per batch
 - Uses mozjpeg for JPEG, compression level 9 with palette mode for PNG, and tuned encoders for WebP and AVIF
 - Quality control from 10 to 100, from tiny files to near-lossless
 - Shows original size, compressed size and savings for every file
@@ -83,12 +83,14 @@ flowchart LR
     C -->|PNG| E[level 9 + palette]
     C -->|WebP| F[effort 5]
     C -->|AVIF| G[effort 4]
-    D --> H[compressed folder]
-    E --> H
-    F --> H
-    G --> H
-    H --> I[JSON stats and downloads]
-    B -. auto delete .-> J[cleanup]
+    C -->|TIFF| H[lzw compression]
+    D --> I[compressed folder]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I --> J[JSON stats and downloads]
+    B -. auto delete .-> K[cleanup]
 ```
 
 Compression happens in-process through libvips. There are no workers, queues or external services involved.

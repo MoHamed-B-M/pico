@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const ACCEPTED = '.jpg,.jpeg,.png,.webp,.avif';
+const ACCEPTED = '.jpg,.jpeg,.png,.webp,.avif,.tiff,.tif';
 
 const StyledWrapper = styled.div`
   /* --- Premium Coordinated Palette --- */
