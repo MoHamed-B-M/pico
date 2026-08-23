@@ -16,6 +16,7 @@
 > 🌐 **Official website & docs:** [https://mohamed-b-m.github.io/pico](https://mohamed-b-m.github.io/pico/)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/MoHamed-B-M/pico/pulls)
+[![Visitors](https://komarev.com/ghpvc/?username=MoHamed-B-M&repo=pico&color=22c55e&style=flat-square&label=visitors)](https://github.com/MoHamed-B-M/pico)
 [![Maintained](https://img.shields.io/badge/maintained-yes-brightgreen.svg?style=flat-square)](https://github.com/MoHamed-B-M/pico/graphs/commit-activity)
 [![No Cloud](https://img.shields.io/badge/cloud-none-critical?style=flat-square)](#-why-pico)
 [![Tracking](https://img.shields.io/badge/telemetry-zero-critical?style=flat-square)](#-why-pico)
@@ -237,10 +238,8 @@ and commercial use, provided the author is credited in copies and derivative wor
 **IT Student · Developer · Privacy enthusiast**
 
 [![Gmail](https://img.shields.io/badge/Gmail-benmohamedm715%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:benmohamedm715@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-MoHamed-B-M-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MoHamed-B-M)
+[![GitHub](https://img.shields.io/badge/GitHub-MoHamed--B--M-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MoHamed-B-M)
 
 ⭐ **If Pico saved you disk space, please star the repo — it helps a lot!** ⭐
-
-<img src="https://komarev.com/ghpvc/?username=MoHamed-B-M&repo=pico-img&color=22c55e&style=flat-square&label=visitors" alt="visitors" />
 
 </div>
