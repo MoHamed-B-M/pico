@@ -22,6 +22,23 @@ It exists because "free image compressor" usually means sending your photos to s
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 
+### GitHub Insights
+
+<a href="https://github.com/MoHamed-B-M/pico">
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=MoHamed-B-M&show_icons=true&theme=chartreuse-dark&hide_border=true&bg_color=0d1117&title_color=22c55e&icon_color=22c55e&text_color=c9d1d9&ring_color=22c55e&include_all_commits=true&count_private=true" />
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=MoHamed-B-M&layout=compact&theme=chartreuse-dark&hide_border=true&bg_color=0d1117&title_color=22c55e&text_color=c9d1d9&langs_count=8" />
+</a>
+
+<a href="https://github.com/MoHamed-B-M">
+  <img height="170em" src="https://github-readme-streak-stats.herokuapp.com/?user=MoHamed-B-M&theme=chartreuse-dark&hide_border=true&background=0d1117&ring=22c55e&fire=22c55e&currStreakLabel=22c55e&sideLabels=c9d1d9&dates=8b949e" />
+</a>
+
+<p align="center">
+  <a href="https://github.com/MoHamed-B-M">
+    <img src="https://github-readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=1000&color=22C55E&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=100&lines=Full+Stack+Developer;Open+Source+Enthusiast;Always+Learning+%F0%9F%9A%80" alt="Typing SVG" />
+  </a>
+</p>
+
 ## Features
 
 - Compresses JPG, JPEG, PNG, WebP, AVIF and TIFF, up to 25 MB per file and 30 files per batch
