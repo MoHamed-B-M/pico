@@ -11,6 +11,9 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=for-the-badge)](https://www.npmjs.com/package/pico-img)
 [![Stars](https://img.shields.io/github/stars/MoHamed-B-M/pico?style=for-the-badge&logo=github&color=yellow)](https://github.com/MoHamed-B-M/pico/stargazers)
+[![Live Site](https://img.shields.io/badge/🌐_website-mohamed--b--m.github.io%2Fpico-22c55e?style=for-the-badge&logo=github&logoColor=white)](https://mohamed-b-m.github.io/pico/)
+
+> 🌐 **Official website & docs:** [https://mohamed-b-m.github.io/pico](https://mohamed-b-m.github.io/pico/)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/MoHamed-B-M/pico/pulls)
 [![Maintained](https://img.shields.io/badge/maintained-yes-brightgreen.svg?style=flat-square)](https://github.com/MoHamed-B-M/pico/graphs/commit-activity)
