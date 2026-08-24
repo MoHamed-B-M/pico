@@ -200,7 +200,7 @@ export default function App() {
               {tool === 'convert' && <ConvertPanel />}
 
               <footer className="border-t border-line pt-4 mt-8 text-center text-[length:var(--text-md)] leading-relaxed text-ink-dim">
-                pico v1.2.0 · sharp/mozjpeg/ffmpeg · localhost only · uploads auto-cleaned · zero telemetry
+                pico v1.1.0 · sharp/mozjpeg/ffmpeg · localhost only · uploads auto-cleaned · zero telemetry
               </footer>
             </div>
           </div>

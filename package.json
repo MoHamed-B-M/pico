@@ -1,7 +1,7 @@
 {
   "name": "pico-img",
-  "version": "1.2.0",
-  "description": "Local-first image & video compressor & TinyPNG alternative — compress JPG, PNG, WebP, AVIF, TIFF & JXL locally. Video compression via ffmpeg.",
+  "version": "1.1.0",
+  "description": "Local-first image & video compressor. No cloud. No limits. 100% private.",
   "type": "module",
   "main": "server.js",
   "bin": {
