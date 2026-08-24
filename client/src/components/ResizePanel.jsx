@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LoadingState from './ui/loading-state.jsx';
+import { ResizeTip } from './ToolTips.jsx';
 
 const PRESETS = [
   { label: '1920×1080', w: 1920, h: 1080 },
@@ -55,6 +56,8 @@ export default function ResizePanel() {
         <p className="section-label">## resize</p>
         <h2 className="mt-2 text-xl font-bold uppercase tracking-tight text-ink">Change image dimensions</h2>
       </div>
+
+      <ResizeTip />
 
       {/* Upload */}
       <label className="term-panel flex flex-col items-center justify-center p-8 cursor-pointer hover:bg-surf-muted transition-colors">

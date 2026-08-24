@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LoadingState from './ui/loading-state.jsx';
+import { ConvertTip } from './ToolTips.jsx';
 
 const FORMATS = [
   { ext: 'jpg', label: 'JPEG' },
@@ -54,6 +55,8 @@ export default function ConvertPanel() {
         <p className="section-label">## convert</p>
         <h2 className="mt-2 text-xl font-bold uppercase tracking-tight text-ink">Change image format</h2>
       </div>
+
+      <ConvertTip />
 
       {/* Upload */}
       <label className="term-panel flex flex-col items-center justify-center p-8 cursor-pointer hover:bg-surf-muted transition-colors">
