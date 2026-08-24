@@ -425,6 +425,254 @@ app.use(
   express.static(COMPRESSED_DIR, { maxAge: '1h', fallthrough: true })
 );
 
+/* ------------------------------------------------------------------ */
+/*  Resize endpoint                                                    */
+/* ------------------------------------------------------------------ */
+
+async function resizeOne(file, width, height, fit) {
+  const ext = path.extname(file.originalname).toLowerCase();
+  const outputName = path.basename(file.filename).replace(ext, `.resized${ext}`);
+  const outputPath = path.join(COMPRESSED_DIR, outputName);
+
+  const pipeline = sharp(file.path).rotate();
+  const resizeOpts = { fit: fit || 'inside' };
+  if (width) resizeOpts.width = width;
+  if (height) resizeOpts.height = height;
+  pipeline.resize(resizeOpts);
+  pipeline.toFormat(ext.replace('.', '') === 'jxl' ? 'png' : ext.replace('.', ''));
+
+  await pipeline.toFile(outputPath);
+
+  const [originalStat, resizedStat] = await Promise.all([
+    fs.stat(file.path),
+    fs.stat(outputPath),
+  ]);
+
+  const meta = await sharp(outputPath).metadata();
+
+  return {
+    id: path.basename(file.filename).split('__')[0],
+    originalName: sanitizeName(path.basename(file.originalname)),
+    downloadUrl: `/compressed/${encodeURIComponent(outputName)}`,
+    format: ext.replace('.', '').toUpperCase(),
+    originalSize: originalStat.size,
+    compressedSize: resizedStat.size,
+    savedPercentage: originalStat.size > 0
+      ? Math.max(0, Math.round(((originalStat.size - resizedStat.size) / originalStat.size) * 100))
+      : 0,
+    dimensions: { width: meta.width, height: meta.height },
+  };
+}
+
+app.post('/api/resize', (req, res) => {
+  upload.array('images', MAX_FILES)(req, res, async (uploadErr) => {
+    if (uploadErr) {
+      const status = uploadErr.status || (uploadErr.code === 'LIMIT_FILE_SIZE' ? 413 : 400);
+      return res.status(status).json({ success: false, error: uploadErr.message });
+    }
+
+    const files = req.files ?? [];
+    if (files.length === 0) {
+      return res.status(400).json({ success: false, error: 'No images received.' });
+    }
+
+    const width = Number.parseInt(req.body?.width, 10) || undefined;
+    const height = Number.parseInt(req.body?.height, 10) || undefined;
+    const fit = req.body?.fit || 'inside';
+
+    if (!width && !height) {
+      return res.status(400).json({ success: false, error: 'Provide width and/or height.' });
+    }
+
+    const results = [];
+    const failures = [];
+
+    for (const file of files) {
+      try {
+        results.push(await resizeOne(file, width, height, fit));
+      } catch (err) {
+        failures.push({ originalName: sanitizeName(path.basename(file.originalname)), reason: err.message });
+      } finally {
+        await safeCleanup(file);
+      }
+    }
+
+    if (results.length === 0) {
+      return res.status(500).json({ success: false, error: 'Every file failed to resize.', failures });
+    }
+
+    res.json({ success: true, files: results, ...(failures.length && { failures }) });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  Crop endpoint                                                      */
+/* ------------------------------------------------------------------ */
+
+async function cropOne(file, x, y, w, h) {
+  const ext = path.extname(file.originalname).toLowerCase();
+  const outputName = path.basename(file.filename).replace(ext, `.cropped${ext}`);
+  const outputPath = path.join(COMPRESSED_DIR, outputName);
+
+  const meta = await sharp(file.path).metadata();
+  const left = Math.min(x, meta.width - 1);
+  const top = Math.min(y, meta.height - 1);
+  const cropW = Math.min(w, meta.width - left);
+  const cropH = Math.min(h, meta.height - top);
+
+  await sharp(file.path)
+    .rotate()
+    .extract({ left, top, width: cropW, height: cropH })
+    .toFile(outputPath);
+
+  const [originalStat, croppedStat] = await Promise.all([
+    fs.stat(file.path),
+    fs.stat(outputPath),
+  ]);
+
+  const outMeta = await sharp(outputPath).metadata();
+
+  return {
+    id: path.basename(file.filename).split('__')[0],
+    originalName: sanitizeName(path.basename(file.originalname)),
+    downloadUrl: `/compressed/${encodeURIComponent(outputName)}`,
+    format: ext.replace('.', '').toUpperCase(),
+    originalSize: originalStat.size,
+    compressedSize: croppedStat.size,
+    savedPercentage: originalStat.size > 0
+      ? Math.max(0, Math.round(((originalStat.size - croppedStat.size) / originalStat.size) * 100))
+      : 0,
+    dimensions: { width: outMeta.width, height: outMeta.height },
+  };
+}
+
+app.post('/api/crop', (req, res) => {
+  upload.array('images', MAX_FILES)(req, res, async (uploadErr) => {
+    if (uploadErr) {
+      const status = uploadErr.status || (uploadErr.code === 'LIMIT_FILE_SIZE' ? 413 : 400);
+      return res.status(status).json({ success: false, error: uploadErr.message });
+    }
+
+    const files = req.files ?? [];
+    if (files.length === 0) {
+      return res.status(400).json({ success: false, error: 'No images received.' });
+    }
+
+    const x = Number.parseInt(req.body?.x, 10) || 0;
+    const y = Number.parseInt(req.body?.y, 10) || 0;
+    const w = Number.parseInt(req.body?.width, 10);
+    const h = Number.parseInt(req.body?.height, 10);
+
+    if (!w || !h || w <= 0 || h <= 0) {
+      return res.status(400).json({ success: false, error: 'Provide positive width and height.' });
+    }
+
+    const results = [];
+    const failures = [];
+
+    for (const file of files) {
+      try {
+        results.push(await cropOne(file, x, y, w, h));
+      } catch (err) {
+        failures.push({ originalName: sanitizeName(path.basename(file.originalname)), reason: err.message });
+      } finally {
+        await safeCleanup(file);
+      }
+    }
+
+    if (results.length === 0) {
+      return res.status(500).json({ success: false, error: 'Every file failed to crop.', failures });
+    }
+
+    res.json({ success: true, files: results, ...(failures.length && { failures }) });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  Convert endpoint                                                   */
+/* ------------------------------------------------------------------ */
+
+const CONVERT_FORMATS = {
+  jpg: { sharp: 'jpeg', mime: 'image/jpeg' },
+  jpeg: { sharp: 'jpeg', mime: 'image/jpeg' },
+  png: { sharp: 'png', mime: 'image/png' },
+  webp: { sharp: 'webp', mime: 'image/webp' },
+  avif: { sharp: 'avif', mime: 'image/avif' },
+  tiff: { sharp: 'tiff', mime: 'image/tiff' },
+  tif: { sharp: 'tiff', mime: 'image/tiff' },
+};
+
+async function convertOne(file, targetFormat, quality) {
+  const ext = path.extname(file.originalname).toLowerCase();
+  const fmt = CONVERT_FORMATS[targetFormat];
+  if (!fmt) throw new Error(`Unsupported target format: ${targetFormat}`);
+
+  const outputName = path.basename(file.filename).replace(ext, `.converted.${targetFormat}`);
+  const outputPath = path.join(COMPRESSED_DIR, outputName);
+
+  const pipeline = sharp(file.path).rotate();
+  pipeline.toFormat(fmt.sharp, { quality });
+
+  await pipeline.toFile(outputPath);
+
+  const [originalStat, convertedStat] = await Promise.all([
+    fs.stat(file.path),
+    fs.stat(outputPath),
+  ]);
+
+  return {
+    id: path.basename(file.filename).split('__')[0],
+    originalName: sanitizeName(path.basename(file.originalname)),
+    downloadUrl: `/compressed/${encodeURIComponent(outputName)}`,
+    format: targetFormat.toUpperCase(),
+    originalSize: originalStat.size,
+    compressedSize: convertedStat.size,
+    savedPercentage: originalStat.size > 0
+      ? Math.max(0, Math.round(((originalStat.size - convertedStat.size) / originalStat.size) * 100))
+      : 0,
+  };
+}
+
+app.post('/api/convert', (req, res) => {
+  upload.array('images', MAX_FILES)(req, res, async (uploadErr) => {
+    if (uploadErr) {
+      const status = uploadErr.status || (uploadErr.code === 'LIMIT_FILE_SIZE' ? 413 : 400);
+      return res.status(status).json({ success: false, error: uploadErr.message });
+    }
+
+    const files = req.files ?? [];
+    if (files.length === 0) {
+      return res.status(400).json({ success: false, error: 'No images received.' });
+    }
+
+    const target = (req.body?.format || 'webp').toLowerCase().replace('.', '');
+    const quality = clampQuality(req.body?.quality);
+
+    if (!CONVERT_FORMATS[target]) {
+      return res.status(400).json({ success: false, error: `Unsupported target format: ${target}` });
+    }
+
+    const results = [];
+    const failures = [];
+
+    for (const file of files) {
+      try {
+        results.push(await convertOne(file, target, quality));
+      } catch (err) {
+        failures.push({ originalName: sanitizeName(path.basename(file.originalname)), reason: err.message });
+      } finally {
+        await safeCleanup(file);
+      }
+    }
+
+    if (results.length === 0) {
+      return res.status(500).json({ success: false, error: 'Every file failed to convert.', failures });
+    }
+
+    res.json({ success: true, quality, files: results, ...(failures.length && { failures }) });
+  });
+});
+
 // Malformed JSON & generic API 404s
 app.use('/api', (_req, res) => {
   res.status(404).json({ success: false, error: 'Unknown API route.' });
