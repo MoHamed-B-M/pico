@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-08-24
+
+### Added
+- **Resize tool** — change image dimensions with aspect lock and presets (1920×1080, 1280×720, etc.)
+- **Crop tool** — trim images with x/y offset and width/height controls
+- **Convert tool** — change image format (JPEG/PNG/WebP/AVIF/TIFF) with quality slider
+- Server endpoints: `POST /api/resize`, `POST /api/crop`, `POST /api/convert`
+- **Animated SVG tip popups** — glassy modal with step-by-step guides for each tool
+- **Auto update check** — polls npm registry on startup, shows toast when newer version available
+- `GET /api/update-check` endpoint
+
+### Changed
+- All tool panels fully wired to backend (previously UI-only shells)
+
 ## [1.1.0] - 2026-08-24
 
 ### Added

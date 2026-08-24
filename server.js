@@ -361,7 +361,7 @@ app.get('/api/health', (_req, res) => {
   res.json({
     success: true,
     service: 'pico',
-    version: '1.1.0',
+    version: '1.2.0',
     formats: {
       images: [...IMAGE_EXTENSIONS],
       videos: ffmpegPath ? [...VIDEO_EXTENSIONS] : [],
