@@ -10,6 +10,7 @@ import LoadingState from './components/ui/loading-state.jsx';
 import HandwritingSvg from './components/ui/handwriting-svg.jsx';
 import Sidebar, { MobileNav } from './components/Sidebar.jsx';
 import { TipButton } from './components/ToolTips.jsx';
+import UpdateToast from './components/UpdateToast.jsx';
 import ResizePanel from './components/ResizePanel.jsx';
 import CutPanel from './components/CutPanel.jsx';
 import ConvertPanel from './components/ConvertPanel.jsx';
@@ -205,6 +206,7 @@ export default function App() {
           </div>
 
           <MobileNav active={tool} onSelect={setTool} />
+          <UpdateToast />
         </>
       )}
     </div>

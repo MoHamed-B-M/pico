@@ -369,6 +369,46 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+/* ------------------------------------------------------------------ */
+/*  Update check — polls npm registry once at startup, caches result    */
+/* ------------------------------------------------------------------ */
+
+let cachedUpdateInfo = null;
+
+async function checkForUpdate() {
+  try {
+    const root = path.dirname(fileURLToPath(import.meta.url));
+    const pkg = JSON.parse(fsSync.readFileSync(path.join(root, 'package.json'), 'utf8'));
+    const current = pkg.version;
+
+    const res = await fetch('https://registry.npmjs.org/pico-img/latest', {
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const latest = data.version;
+
+    const updateAvailable = latest !== current;
+    cachedUpdateInfo = { current, latest, updateAvailable };
+    if (updateAvailable) {
+      console.log(`  ↻ update available: pico-img@${latest} (you have ${current})`);
+    }
+    return cachedUpdateInfo;
+  } catch {
+    return null;
+  }
+}
+
+checkForUpdate();
+
+app.get('/api/update-check', (_req, res) => {
+  if (cachedUpdateInfo) {
+    res.json(cachedUpdateInfo);
+  } else {
+    res.json({ updateAvailable: false });
+  }
+});
+
 // Compress endpoint (images + videos)
 app.post('/api/compress', (req, res) => {
   upload.array('images', MAX_FILES)(req, res, async (uploadErr) => {
