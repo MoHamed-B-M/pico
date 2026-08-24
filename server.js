@@ -6,8 +6,31 @@ import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { spawn } from 'node:child_process';
 import sharp from 'sharp';
 import open from 'open';
+
+/* ------------------------------------------------------------------ */
+/*  Optional deps: ffmpeg-static (video) + @jsquash/jxl (JPEG XL)     */
+/* ------------------------------------------------------------------ */
+
+let ffmpegPath = null;
+try {
+  ffmpegPath = (await import('ffmpeg-static')).default ?? null;
+} catch {
+  /* ffmpeg-static not installed — video compression disabled */
+}
+
+let jxlEncode = null;
+let jxlDecode = null;
+async function loadJxl() {
+  if (!jxlEncode) {
+    const mod = await import('@jsquash/jxl');
+    jxlEncode = mod.default;
+    // decode is a named export
+    jxlDecode = (await import('@jsquash/jxl')).decode ?? mod.decode;
+  }
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -26,15 +49,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
       }
     } else if (args[i] === '--no-open') {
       process.env.PICO_NO_OPEN = '1';
+    } else if (args[i] === '--version' || args[i] === '-v') {
+      const root = path.dirname(fileURLToPath(import.meta.url));
+      const pkg = JSON.parse(fsSync.readFileSync(path.join(root, 'package.json'), 'utf8'));
+      console.log(pkg.version);
+      process.exit(0);
     } else if (args[i] === '--help' || args[i] === '-h') {
       console.log(`
-⚡ pico - Local Image Compressor
+⚡ pico - Local Image & Video Compressor
 
 Usage: pico [options]
 
 Options:
   -p, --port <number>   Port to serve on (default: 3000)
       --no-open         Do not auto-open the browser
+  -v, --version         Show version number
   -h, --help            Show this help
 `);
       process.exit(0);
@@ -53,19 +82,29 @@ const HOST = process.env.HOST || 'localhost';
 const IS_DEV = process.env.PICO_DEV === '1';
 const AUTO_OPEN = process.env.PICO_NO_OPEN !== '1';
 
-const MAX_FILE_BYTES = 25 * 1024 * 1024; // 25 MB per image
+const MAX_IMAGE_BYTES = 25 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 200 * 1024 * 1024;
+const MAX_UPLOAD_BYTES = 200 * 1024 * 1024; // multer per-file limit
 const MAX_FILES = 30;
 const MIN_QUALITY = 10;
 const MAX_QUALITY = 100;
 
-const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.tiff', '.tif']);
-const ALLOWED_MIME_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/avif',
-  'image/tiff',
+const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.tiff', '.tif', '.jxl']);
+const VIDEO_EXTENSIONS = new Set(['.mp4', '.webm', '.mov', '.mkv', '.avi']);
+const ALL_EXTENSIONS = new Set([...IMAGE_EXTENSIONS, ...VIDEO_EXTENSIONS]);
+
+const IMAGE_MIMES = new Set([
+  'image/jpeg', 'image/png', 'image/webp', 'image/avif',
+  'image/tiff', 'image/jxl',
 ]);
+const VIDEO_MIMES = new Set([
+  'video/mp4', 'video/webm', 'video/quicktime',
+  'video/x-matroska', 'video/x-msvideo',
+]);
+const ALL_MIMES = new Set([...IMAGE_MIMES, ...VIDEO_MIMES]);
+
+function isImage(ext) { return IMAGE_EXTENSIONS.has(ext); }
+function isVideo(ext) { return VIDEO_EXTENSIONS.has(ext); }
 
 /* ------------------------------------------------------------------ */
 /*  Bootstrap directories                                              */
@@ -106,14 +145,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: MAX_FILE_BYTES, files: MAX_FILES },
+  limits: { fileSize: MAX_UPLOAD_BYTES, files: MAX_FILES },
   fileFilter: (_req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    if (ALLOWED_MIME_TYPES.has(file.mimetype) && ALLOWED_EXTENSIONS.has(ext)) {
+    if (ALL_MIMES.has(file.mimetype) && ALL_EXTENSIONS.has(ext)) {
       return cb(null, true);
     }
     const err = new Error(
-      `Unsupported file type "${ext || file.mimetype}". Allowed: jpg, jpeg, png, webp, avif, tiff.`
+      `Unsupported file type "${ext || file.mimetype}". Allowed: jpg, jpeg, png, webp, avif, tiff, jxl, mp4, webm, mov, mkv, avi.`
     );
     err.status = 415;
     cb(err);
@@ -121,7 +160,7 @@ const upload = multer({
 });
 
 /* ------------------------------------------------------------------ */
-/*  Sharp compression pipeline                                         */
+/*  Sharp compression pipeline (images except JXL)                     */
 /* ------------------------------------------------------------------ */
 
 function clampQuality(raw) {
@@ -156,13 +195,122 @@ function buildSharpPipeline(inputPath, format, quality) {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/*  JPEG XL pipeline (@jsquash/jxl)                                    */
+/* ------------------------------------------------------------------ */
+
+async function compressJxl(file, quality, outputName, outputPath) {
+  await loadJxl();
+
+  const inputBuf = await fs.readFile(file.path);
+  const imageData = await jxlDecode(inputBuf.buffer);
+
+  const encoded = await jxlEncode(imageData, { quality });
+  await fs.writeFile(outputPath, Buffer.from(encoded));
+
+  const [originalStat, compressedStat] = await Promise.all([
+    fs.stat(file.path),
+    fs.stat(outputPath),
+  ]);
+
+  return {
+    id: path.basename(file.filename).split('__')[0],
+    originalName: sanitizeName(path.basename(file.originalname)),
+    downloadUrl: `/compressed/${encodeURIComponent(outputName)}`,
+    format: 'JXL',
+    quality,
+    originalSize: originalStat.size,
+    compressedSize: compressedStat.size,
+    savedPercentage: originalStat.size > 0
+      ? Math.max(0, Math.round(((originalStat.size - compressedStat.size) / originalStat.size) * 100))
+      : 0,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Video pipeline (ffmpeg-static)                                     */
+/* ------------------------------------------------------------------ */
+
+function compressVideo(file, quality, outputName, outputPath) {
+  if (!ffmpegPath) {
+    throw new Error(
+      'Video compression unavailable — ffmpeg-static not installed. ' +
+      'Run: npm install ffmpeg-static'
+    );
+  }
+
+  // quality 10–100 → CRF 48–18 (lower = better)
+  const crf = Math.round(51 - (quality / 100) * 33);
+
+  return new Promise((resolve, reject) => {
+    const args = [
+      '-y', '-i', file.path,
+      '-c:v', 'libx264', '-crf', String(crf), '-preset', 'medium',
+      '-c:a', 'aac', '-b:a', '128k',
+      '-movflags', '+faststart',
+      outputPath,
+    ];
+
+    const proc = spawn(ffmpegPath, args, { stdio: 'pipe' });
+    let stderr = '';
+    proc.stderr?.on('data', (d) => { stderr += d; });
+    proc.on('error', reject);
+    proc.on('close', async (code) => {
+      if (code !== 0) {
+        return reject(new Error(`ffmpeg exited with code ${code}: ${stderr.slice(-300)}`));
+      }
+      try {
+        const [originalStat, compressedStat] = await Promise.all([
+          fs.stat(file.path),
+          fs.stat(outputPath),
+        ]);
+        resolve({
+          id: path.basename(file.filename).split('__')[0],
+          originalName: sanitizeName(path.basename(file.originalname)),
+          downloadUrl: `/compressed/${encodeURIComponent(outputName)}`,
+          format: path.extname(file.originalname).replace('.', '').toUpperCase(),
+          quality,
+          originalSize: originalStat.size,
+          compressedSize: compressedStat.size,
+          savedPercentage: originalStat.size > 0
+            ? Math.max(0, Math.round(((originalStat.size - compressedStat.size) / originalStat.size) * 100))
+            : 0,
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/*  Compress dispatcher                                                */
+/* ------------------------------------------------------------------ */
+
 async function compressOne(file, quality) {
   const ext = path.extname(file.originalname).toLowerCase();
   const outputName = path
     .basename(file.filename)
-    .replace(ext, `.compressed${ext}`); // uuid__name.compressed.ext
+    .replace(ext, `.compressed${ext}`);
   const outputPath = path.join(COMPRESSED_DIR, outputName);
 
+  if (isVideo(ext)) {
+    if (!ffmpegPath) {
+      throw new Error('Video compression unavailable — ffmpeg-static not installed.');
+    }
+    // Validate video size
+    const stat = await fs.stat(file.path);
+    if (stat.size > MAX_VIDEO_BYTES) {
+      throw new Error(`Video too large (${(stat.size / (1024 * 1024)).toFixed(1)} MB). Max: ${MAX_VIDEO_BYTES / (1024 * 1024)} MB.`);
+    }
+    return compressVideo(file, quality, outputName, outputPath);
+  }
+
+  if (ext === '.jxl') {
+    return compressJxl(file, quality, outputName, outputPath);
+  }
+
+  // Sharp pipeline for standard image formats
   const pipeline = buildSharpPipeline(file.path, ext, quality);
   await pipeline.toFile(outputPath);
 
@@ -210,17 +358,25 @@ app.use(express.json());
 
 // Health check
 app.get('/api/health', (_req, res) => {
-  res.json({ success: true, service: 'pico', version: '1.0.2' });
+  res.json({
+    success: true,
+    service: 'pico',
+    version: '1.1.0',
+    formats: {
+      images: [...IMAGE_EXTENSIONS],
+      videos: ffmpegPath ? [...VIDEO_EXTENSIONS] : [],
+    },
+  });
 });
 
-// Compress endpoint
+// Compress endpoint (images + videos)
 app.post('/api/compress', (req, res) => {
   upload.array('images', MAX_FILES)(req, res, async (uploadErr) => {
     if (uploadErr) {
       const status = uploadErr.status || (uploadErr.code === 'LIMIT_FILE_SIZE' ? 413 : 400);
       const message =
         uploadErr.code === 'LIMIT_FILE_SIZE'
-          ? `Each file must be ≤ ${MAX_FILE_BYTES / (1024 * 1024)} MB.`
+          ? `Each file must be ≤ ${MAX_UPLOAD_BYTES / (1024 * 1024)} MB.`
           : uploadErr.message;
       return res.status(status).json({ success: false, error: message });
     }
@@ -229,7 +385,7 @@ app.post('/api/compress', (req, res) => {
     if (files.length === 0) {
       return res
         .status(400)
-        .json({ success: false, error: 'No images received. Attach them under the "images" field.' });
+        .json({ success: false, error: 'No files received. Attach them under the "images" field.' });
     }
 
     const quality = clampQuality(req.body?.quality);
@@ -314,12 +470,16 @@ async function attachFrontend() {
 /* ------------------------------------------------------------------ */
 
 function printBanner(url) {
+  const fmt = ffmpegPath
+    ? 'images + video (ffmpeg)'
+    : 'images only (ffmpeg-static not installed)';
   const line = '='.repeat(43);
   console.log(`
 ${line}
-⚡ Pico - Local Image Compressor
+⚡ Pico - Local Image & Video Compressor
 ${line}
 🚀 Server running at: ${url}
+📺 Formats: ${fmt}
 ==========================================`);
 }
 

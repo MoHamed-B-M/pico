@@ -1,11 +1,11 @@
 # Pico
 
-A local-first image compressor for JPG, PNG, WebP, AVIF and TIFF. Pico runs a small Express server on your machine, compresses everything with Sharp, and shows the results in a terminal style web UI. Nothing is uploaded, there are no accounts, and nothing leaves your computer.
+A local-first image & video compressor for JPG, PNG, WebP, AVIF, TIFF, JPEG XL and video formats. Pico runs a small Express server on your machine, compresses everything with Sharp (ffmpeg for video), and shows the results in a terminal style web UI. Nothing is uploaded, there are no accounts, and nothing leaves your computer.
 
 It exists because "free image compressor" usually means sending your photos to someone else's server. Pico does the same work offline.
 
 [![npm version](https://img.shields.io/npm/v/pico-img?style=for-the-badge&color=22c55e)](https://www.npmjs.com/package/pico-img)
-[![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge)](LICENSE)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-22c55e?style=for-the-badge)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Stars](https://img.shields.io/github/stars/MoHamed-B-M/pico?style=for-the-badge&color=yellow&logo=github)](https://github.com/MoHamed-B-M/pico/stargazers)
 [![Visitors](https://komarev.com/ghpvc/?username=MoHamed-B-M&repo=pico&color=22c55e&style=for-the-badge&label=visitors)](https://github.com/MoHamed-B-M/pico)
@@ -44,8 +44,8 @@ It exists because "free image compressor" usually means sending your photos to s
 
 ## Features
 
-- Compresses JPG, JPEG, PNG, WebP, AVIF and TIFF, up to 25 MB per file and 30 files per batch
-- Uses mozjpeg for JPEG, compression level 9 with palette mode for PNG, and tuned encoders for WebP and AVIF
+- Compresses JPG, JPEG, PNG, WebP, AVIF, TIFF, JPEG XL and video (MP4, WebM, MOV, MKV, AVI), up to 200 MB per file and 30 files per batch
+- Uses mozjpeg for JPEG, compression level 9 with palette mode for PNG, tuned encoders for WebP/AVIF, LZW for TIFF, libjxl for JPEG XL, and libx264 + AAC for video
 - Quality control from 10 to 100, from tiny files to near-lossless
 - Shows original size, compressed size and savings for every file
 - Keeps the original format, respects EXIF orientation
@@ -100,6 +100,7 @@ Usage: pico [options]
 Options:
   -p, --port <number>   Port to serve on (default: 3000)
       --no-open         Do not auto-open the browser
+  -v, --version         Show version number
   -h, --help            Show this help
 ```
 
@@ -107,23 +108,28 @@ Options:
 
 ```mermaid
 flowchart LR
-    A[Drop images] --> B[Multer temp store]
-    B --> C{Sharp}
-    C -->|JPG| D[mozjpeg]
-    C -->|PNG| E[level 9 + palette]
-    C -->|WebP| F[effort 5]
-    C -->|AVIF| G[effort 4]
-    C -->|TIFF| H[lzw compression]
-    D --> I[compressed folder]
-    E --> I
-    F --> I
-    G --> I
-    H --> I
-    I --> J[JSON stats and downloads]
-    B -. auto delete .-> K[cleanup]
+    A[Drop files] --> B[Multer temp store]
+    B --> C{Route}
+    C -->|image| D[Sharp]
+    C -->|JXL| E[libjxl]
+    C -->|video| F[ffmpeg]
+    D -->|JPG| G[mozjpeg]
+    D -->|PNG| H[level 9 + palette]
+    D -->|WebP| I[effort 5]
+    D -->|AVIF| J[effort 4]
+    D -->|TIFF| K[lzw compression]
+    E --> L[compressed folder]
+    F --> L
+    G --> L
+    H --> L
+    I --> L
+    J --> L
+    K --> L
+    L --> M[JSON stats and downloads]
+    B -. auto delete .-> N[cleanup]
 ```
 
-Compression happens in-process through libvips. There are no workers, queues or external services involved.
+Compression happens in-process through libvips (images) and ffmpeg (video). There are no workers, queues or external services involved.
 
 ## Results you can expect
 
@@ -189,7 +195,7 @@ Pull requests are welcome. Fork the repo, make your changes, and open a PR. Some
 
 ## License
 
-This project is licensed under the MIT license with an attribution clause. See [LICENSE](LICENSE) for details.
+This project is licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.
 
 ## Author
 

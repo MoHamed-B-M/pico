@@ -5,6 +5,9 @@ compressed/*
 !uploads/.gitkeep
 !compressed/.gitkeep
 *.log
+test-*.mjs
+test.jpg
+test.mp4
 
 .agents/
 .claude/

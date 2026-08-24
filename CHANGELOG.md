@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-08-24
+
+### Added
+- **JPEG XL (JXL)** support via @jsquash/jxl (WASM libjxl) — decode and re-encode at chosen quality
+- **Video compression** via ffmpeg-static (optional) — MP4, WebM, MOV, MKV, AVI with libx264 + AAC
+- `--version` / `-v` CLI flag to print the current version
+- **Left sidebar navigation** with Compress, Resize, Cut, and Convert tool tabs
+- **Resize panel** — width/height inputs with aspect lock and presets
+- **Cut panel** — x/y/width/height crop controls with px/% toggle
+- **Convert panel** — target format selector with quality slider
+- **Mobile bottom nav** — responsive tab bar for small screens
+- Health endpoint now reports supported formats and video availability
+
+### Changed
+- License changed from MIT to **GPL-3.0-only**
+- Max upload size increased to 200 MB (per file) to support video
+- Multer fileFilter accepts video MIME types alongside images
+- Banner prints format support (images only vs images + video)
+- Footer version bumped to `1.1.0`
+- Tagline updated to include video
+
+### Fixed
+- `})}` → `))}` JSX syntax error in App.jsx build
+- Health endpoint version now returns `1.1.0`
+
 ## [1.0.2] - 2026-08-23
 
 ### Added
