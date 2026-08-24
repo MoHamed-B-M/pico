@@ -9,7 +9,7 @@ import ResultsList from './components/ResultsList.jsx';
 import LoadingState from './components/ui/loading-state.jsx';
 import HandwritingSvg from './components/ui/handwriting-svg.jsx';
 import Sidebar, { MobileNav } from './components/Sidebar.jsx';
-import { CompressTip, ResizeTip, CutTip, ConvertTip } from './components/ToolTips.jsx';
+import { TipButton } from './components/ToolTips.jsx';
 import ResizePanel from './components/ResizePanel.jsx';
 import CutPanel from './components/CutPanel.jsx';
 import ConvertPanel from './components/ConvertPanel.jsx';
@@ -131,7 +131,7 @@ export default function App() {
         </header>
 
         <main className="space-y-6">
-          <div className="js-intro"><CompressTip /></div>
+          <div className="js-intro flex justify-end"><TipButton tool="compress" /></div>
           <div className="js-intro space-y-4">
             <DoodleDropzone onFilesSelected={handleFilesSelected} disabled={busy} />
             {queue.length > 0 && (

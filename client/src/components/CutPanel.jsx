@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LoadingState from './ui/loading-state.jsx';
-import { CutTip } from './ToolTips.jsx';
+import { TipButton } from './ToolTips.jsx';
 
 export default function CutPanel() {
   const [cropX, setCropX] = useState(0);
@@ -52,7 +52,7 @@ export default function CutPanel() {
         <h2 className="mt-2 text-xl font-bold uppercase tracking-tight text-ink">Crop & trim images</h2>
       </div>
 
-      <CutTip />
+      <div className="flex justify-end"><TipButton tool="cut" /></div>
 
       {/* Upload */}
       <label className="term-panel flex flex-col items-center justify-center p-8 cursor-pointer hover:bg-surf-muted transition-colors">

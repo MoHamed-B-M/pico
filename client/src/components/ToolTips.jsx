@@ -1,141 +1,304 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export function ResizeTip() {
+function TipsPopup({ title, children, onClose }) {
   return (
-    <div className="flex items-center gap-3 term-panel px-4 py-3 overflow-hidden">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="shrink-0">
-        {/* Outer box (original size) */}
-        <rect x="4" y="4" width="40" height="40" rx="2" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 2" className="text-ink-dim" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
-        {/* Inner box (resized) — animates */}
-        <rect x="14" y="14" width="20" height="20" rx="1" stroke="currentColor" strokeWidth="1.5" className="text-ink">
-          <animate attributeName="x" values="14;10;14" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="y" values="14;10;14" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="width" values="20;28;20" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="height" values="20;28;20" dur="2s" repeatCount="indefinite" />
-        </rect>
+      {/* Popup */}
+      <div
+        className="relative z-10 w-full max-w-sm border border-line bg-surf-base/80 backdrop-blur-xl shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Top bar */}
+        <div className="flex items-center justify-between border-b border-line px-4 py-2">
+          <span className="section-label">{title}</span>
+          <button
+            type="button"
+            onClick={onClose}
+            className="ml-4 px-2 py-1 text-xs uppercase tracking-wider text-ink-dim hover:text-ink transition-colors"
+          >
+            [ ✕ ]
+          </button>
+        </div>
 
-        {/* Corner arrows */}
-        <path d="M10 4L4 4L4 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-ink">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
-        </path>
-        <path d="M38 44L44 44L44 38" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-ink">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
-        </path>
-      </svg>
-      <p className="text-xs text-ink-dim leading-relaxed">
-        Set target <span className="text-ink font-medium">width</span> and <span className="text-ink font-medium">height</span> in pixels.
-        Lock aspect ratio to scale proportionally, or use a preset.
-      </p>
+        {/* Content */}
+        <div className="p-5 space-y-4">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
 
-export function CutTip() {
+/* ------------------------------------------------------------------ */
+/*  SVG Animations                                                     */
+/* ------------------------------------------------------------------ */
+
+function CompressSvg() {
   return (
-    <div className="flex items-center gap-3 term-panel px-4 py-3 overflow-hidden">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="shrink-0">
-        {/* Full image */}
-        <rect x="4" y="4" width="40" height="40" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-ink-dim" />
+    <svg width="120" height="100" viewBox="0 0 120 100" fill="none" className="mx-auto">
+      {/* Top arrow pushing down */}
+      <path d="M60 8V28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-ink-dim">
+        <animate attributeName="d" values="M60 8V28;M60 12V28;M60 8V28" dur="1s" repeatCount="indefinite" />
+      </path>
+      <path d="M54 22L60 28L66 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-dim">
+        <animate attributeName="transform" values="translate(0,0);translate(0,4);translate(0,0)" dur="1s" repeatCount="indefinite" />
+      </path>
 
-        {/* Crop selection — animates */}
-        <rect x="8" y="8" width="16" height="16" rx="1" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 2" className="text-ink">
-          <animate attributeName="x" values="8;16;8" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="y" values="8;16;8" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="width" values="16;24;16" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="height" values="16;24;16" dur="2.5s" repeatCount="indefinite" />
-        </rect>
+      {/* File being compressed — shrinks */}
+      <rect x="30" y="32" width="60" height="60" rx="3" stroke="currentColor" strokeWidth="2" className="text-ink">
+        <animate attributeName="height" values="60;40;60" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="y" values="32;52;32" dur="2s" repeatCount="indefinite" />
+      </rect>
 
-        {/* Crop handle dots */}
-        <circle cx="8" cy="8" r="2" fill="currentColor" className="text-ink">
-          <animate attributeName="cx" values="8;16;8" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="cy" values="8;16;8" dur="2.5s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="24" cy="24" r="2" fill="currentColor" className="text-ink">
-          <animate attributeName="cx" values="24;40;24" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="cy" values="24;40;24" dur="2.5s" repeatCount="indefinite" />
-        </circle>
-
-        {/* Scissors icon */}
-        <text x="20" y="30" fontSize="10" className="text-ink-dim">✂</text>
-      </svg>
-      <p className="text-xs text-ink-dim leading-relaxed">
-        Set <span className="text-ink font-medium">x</span> and <span className="text-ink font-medium">y</span> offset, then <span className="text-ink font-medium">width</span> and <span className="text-ink font-medium">height</span> of the crop area.
-        Everything outside the box is removed.
-      </p>
-    </div>
+      {/* Compression lines */}
+      <line x1="40" y1="44" x2="80" y2="44" stroke="currentColor" strokeWidth="1.5" className="text-ink-dim">
+        <animate attributeName="y1" values="44;54;44" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="y2" values="44;54;44" dur="2s" repeatCount="indefinite" />
+      </line>
+      <line x1="40" y1="56" x2="72" y2="56" stroke="currentColor" strokeWidth="1.5" className="text-ink-dim">
+        <animate attributeName="y1" values="56;62;56" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="y2" values="56;62;56" dur="2s" repeatCount="indefinite" />
+      </line>
+      <line x1="40" y1="68" x2="76" y2="68" stroke="currentColor" strokeWidth="1.5" className="text-ink-dim">
+        <animate attributeName="y1" values="68;70;68" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="y2" values="68;70;68" dur="2s" repeatCount="indefinite" />
+      </line>
+    </svg>
   );
 }
 
-export function ConvertTip() {
+function ResizeSvg() {
   return (
-    <div className="flex items-center gap-3 term-panel px-4 py-3 overflow-hidden">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="shrink-0">
-        {/* Source format */}
-        <rect x="2" y="12" width="16" height="24" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-ink-dim" />
-        <text x="10" y="27" textAnchor="middle" fontSize="6" fill="currentColor" className="text-ink-dim" fontWeight="bold">JPG</text>
+    <svg width="120" height="100" viewBox="0 0 120 100" fill="none" className="mx-auto">
+      {/* Outer box (original size) */}
+      <rect x="15" y="10" width="90" height="80" rx="3" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 3" className="text-ink-dim" />
 
-        {/* Arrow — animates */}
-        <path d="M22 24H30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-ink">
-          <animate attributeName="d" values="M20 24H28;M22 24H30;M20 24H28" dur="1.5s" repeatCount="indefinite" />
-        </path>
-        <path d="M27 21L30 24L27 27" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-ink">
-          <animate attributeName="transform" values="translate(0,0);translate(2,0);translate(0,0)" dur="1.5s" repeatCount="indefinite" />
-        </path>
+      {/* Inner box (resized) — animates */}
+      <rect x="35" y="25" width="50" height="50" rx="2" stroke="currentColor" strokeWidth="2" className="text-ink">
+        <animate attributeName="x" values="35;25;35" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="y" values="25;15;25" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="width" values="50;70;50" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="height" values="50;70;50" dur="2s" repeatCount="indefinite" />
+      </rect>
 
-        {/* Target format — pulses */}
-        <rect x="32" y="12" width="16" height="24" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-ink">
-          <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
-        </rect>
-        <text x="40" y="27" textAnchor="middle" fontSize="6" fill="currentColor" className="text-ink" fontWeight="bold">
-          WEBP
-          <animate attributeName="textContent" values="WEBP;PNG;AVIF;WEBP" dur="3s" repeatCount="indefinite" />
-        </text>
-      </svg>
-      <p className="text-xs text-ink-dim leading-relaxed">
-        Pick a <span className="text-ink font-medium">target format</span> and adjust <span className="text-ink font-medium">quality</span>.
-        WebP and AVIF give the best compression. TIFF preserves maximum detail.
-      </p>
-    </div>
+      {/* Corner arrows */}
+      <path d="M25 10L15 10L15 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-ink">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" />
+      </path>
+      <path d="M85 90L95 90L95 80" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-ink">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" />
+      </path>
+
+      {/* Dimension labels */}
+      <text x="60" y="58" textAnchor="middle" fontSize="8" fill="currentColor" className="text-ink-dim" fontFamily="monospace">
+        w×h
+      </text>
+    </svg>
   );
 }
 
-export function CompressTip() {
+function CutSvg() {
   return (
-    <div className="flex items-center gap-3 term-panel px-4 py-3 overflow-hidden">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="shrink-0">
-        {/* Top arrow pushing down */}
-        <path d="M24 4V14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-ink-dim">
-          <animate attributeName="d" values="M24 4V14;M24 6V14;M24 4V14" dur="1s" repeatCount="indefinite" />
-        </path>
-        <path d="M20 10L24 14L28 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-ink-dim">
-          <animate attributeName="transform" values="translate(0,0);translate(0,2);translate(0,0)" dur="1s" repeatCount="indefinite" />
-        </path>
+    <svg width="120" height="100" viewBox="0 0 120 100" fill="none" className="mx-auto">
+      {/* Full image */}
+      <rect x="15" y="10" width="90" height="80" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-ink-dim" />
 
-        {/* File being compressed — shrinks */}
-        <rect x="12" y="16" width="24" height="28" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-ink">
-          <animate attributeName="height" values="28;20;28" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="y" values="16;24;16" dur="2s" repeatCount="indefinite" />
-        </rect>
+      {/* Crop selection — animates */}
+      <rect x="25" y="20" width="40" height="35" rx="2" stroke="currentColor" strokeWidth="2" strokeDasharray="5 3" className="text-ink">
+        <animate attributeName="x" values="25;45;25" dur="2.5s" repeatCount="indefinite" />
+        <animate attributeName="y" values="20;40;20" dur="2.5s" repeatCount="indefinite" />
+        <animate attributeName="width" values="40;55;40" dur="2.5s" repeatCount="indefinite" />
+        <animate attributeName="height" values="35;45;35" dur="2.5s" repeatCount="indefinite" />
+      </rect>
 
-        {/* Compression lines */}
-        <line x1="16" y1="22" x2="32" y2="22" stroke="currentColor" strokeWidth="1" className="text-ink-dim">
-          <animate attributeName="y1" values="22;26;22" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="y2" values="22;26;22" dur="2s" repeatCount="indefinite" />
-        </line>
-        <line x1="16" y1="28" x2="28" y2="28" stroke="currentColor" strokeWidth="1" className="text-ink-dim">
-          <animate attributeName="y1" values="28;30;28" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="y2" values="28;30;28" dur="2s" repeatCount="indefinite" />
-        </line>
-        <line x1="16" y1="34" x2="30" y2="34" stroke="currentColor" strokeWidth="1" className="text-ink-dim">
-          <animate attributeName="y1" values="34;35;34" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="y2" values="34;35;34" dur="2s" repeatCount="indefinite" />
-        </line>
-      </svg>
-      <p className="text-xs text-ink-dim leading-relaxed">
-        Drag images or videos onto the dropzone. Set <span className="text-ink font-medium">quality</span> (10 = tiny, 100 = near-lossless) and press compress.
-        Results show original vs compressed size.
-      </p>
-    </div>
+      {/* Corner handles */}
+      <circle r="3" fill="currentColor" className="text-ink">
+        <animate attributeName="cx" values="25;45;25" dur="2.5s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="20;40;20" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+      <circle r="3" fill="currentColor" className="text-ink">
+        <animate attributeName="cx" values="65;100;65" dur="2.5s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="55;85;55" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+      <circle r="3" fill="currentColor" className="text-ink-dim">
+        <animate attributeName="cx" values="65;100;65" dur="2.5s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="20;40;20" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+      <circle r="3" fill="currentColor" className="text-ink-dim">
+        <animate attributeName="cx" values="25;45;25" dur="2.5s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="55;85;55" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+    </svg>
   );
 }
+
+function ConvertSvg() {
+  return (
+    <svg width="120" height="100" viewBox="0 0 120 100" fill="none" className="mx-auto">
+      {/* Source format */}
+      <rect x="10" y="25" width="30" height="50" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-ink-dim" />
+      <text x="25" y="55" textAnchor="middle" fontSize="10" fill="currentColor" className="text-ink-dim" fontWeight="bold" fontFamily="monospace">JPG</text>
+
+      {/* Arrow — animates */}
+      <path d="M48 50H68" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-ink">
+        <animate attributeName="d" values="M46 50H66;M50 50H70;M46 50H66" dur="1.5s" repeatCount="indefinite" />
+      </path>
+      <path d="M63 44L70 50L63 56" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink">
+        <animate attributeName="transform" values="translate(0,0);translate(4,0);translate(0,0)" dur="1.5s" repeatCount="indefinite" />
+      </path>
+
+      {/* Target format — pulses */}
+      <rect x="80" y="25" width="30" height="50" rx="3" stroke="currentColor" strokeWidth="2" className="text-ink">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" />
+      </rect>
+
+      {/* Morphing format labels */}
+      <text x="95" y="51" textAnchor="middle" fontSize="10" fill="currentColor" className="text-ink" fontWeight="bold" fontFamily="monospace">
+        <animate attributeName="textContent" values="WEBP;PNG;AVIF;WEBP" dur="3s" repeatCount="indefinite" />
+        WEBP
+      </text>
+      <text x="95" y="64" textAnchor="middle" fontSize="6" fill="currentColor" className="text-ink-dim" fontFamily="monospace">.webp</text>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Tooltip content configs                                            */
+/* ------------------------------------------------------------------ */
+
+const TIPS = {
+  compress: {
+    title: '## how to compress',
+    svg: CompressSvg,
+    lines: [
+      { text: 'Drag images or videos onto the dropzone', highlight: false },
+      { text: 'Set quality (10 = tiny, 100 = near-lossless)', highlight: true, key: 'quality' },
+      { text: 'Press compress — results show original vs compressed', highlight: false },
+    ],
+  },
+  resize: {
+    title: '## how to resize',
+    svg: ResizeSvg,
+    lines: [
+      { text: 'Select images to resize', highlight: false },
+      { text: 'Set target width and/or height in pixels', highlight: true, key: 'width/height' },
+      { text: 'Lock aspect ratio to scale proportionally', highlight: false },
+    ],
+  },
+  cut: {
+    title: '## how to cut',
+    svg: CutSvg,
+    lines: [
+      { text: 'Select images to crop', highlight: false },
+      { text: 'Set x/y offset for crop origin', highlight: true, key: 'x/y' },
+      { text: 'Set width and height of the crop area', highlight: true, key: 'width/height' },
+      { text: 'Everything outside the box is removed', highlight: false },
+    ],
+  },
+  convert: {
+    title: '## how to convert',
+    svg: ConvertSvg,
+    lines: [
+      { text: 'Select images to convert', highlight: false },
+      { text: 'Pick a target format from the grid', highlight: true, key: 'format' },
+      { text: 'Adjust quality — WebP/AVIF give best compression', highlight: false },
+    ],
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/*  Public components                                                  */
+/* ------------------------------------------------------------------ */
+
+function TipButton({ tool }) {
+  const [open, setOpen] = useState(false);
+  const tip = TIPS[tool];
+  if (!tip) return null;
+  const Svg = tip.svg;
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-1.5 border border-line px-3 py-1.5 text-xs uppercase tracking-wider text-ink-dim hover:border-ink hover:text-ink transition-colors"
+      >
+        <span className="text-ink">?</span> show tips
+      </button>
+
+      {open && (
+        <TipsPopup title={tip.title} onClose={() => setOpen(false)}>
+          <div className="text-ink">
+            <Svg />
+          </div>
+          <ul className="space-y-2">
+            {tip.lines.map((line, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs leading-relaxed">
+                <span className="text-ink-dim mt-0.5">›</span>
+                {line.highlight ? (
+                  <span>{line.text.split(line.key)[0]}<span className="text-ink font-medium">{line.key}</span>{line.text.split(line.key).slice(1).join(line.key)}</span>
+                ) : (
+                  <span className="text-ink-dim">{line.text}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </TipsPopup>
+      )}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Inline tips (compressed view in main compress flow)                */
+/* ------------------------------------------------------------------ */
+
+function InlineTip({ tool }) {
+  const [open, setOpen] = useState(false);
+  const tip = TIPS[tool];
+  if (!tip) return null;
+  const Svg = tip.svg;
+
+  return (
+    <>
+      <div className="flex items-center justify-between term-panel px-4 py-3">
+        <div className="flex items-center gap-2">
+          <span className="text-ink text-sm">?</span>
+          <span className="text-xs text-ink-dim">Quick tip: {tip.lines[0].text.toLowerCase()}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="text-xs uppercase tracking-wider text-ink-dim hover:text-ink transition-colors"
+        >
+          [ expand ]
+        </button>
+      </div>
+
+      {open && (
+        <TipsPopup title={tip.title} onClose={() => setOpen(false)}>
+          <div className="text-ink">
+            <Svg />
+          </div>
+          <ul className="space-y-2">
+            {tip.lines.map((line, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs leading-relaxed">
+                <span className="text-ink-dim mt-0.5">›</span>
+                {line.highlight ? (
+                  <span>{line.text.split(line.key)[0]}<span className="text-ink font-medium">{line.key}</span>{line.text.split(line.key).slice(1).join(line.key)}</span>
+                ) : (
+                  <span className="text-ink-dim">{line.text}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </TipsPopup>
+      )}
+    </>
+  );
+}
+
+export { TipButton, InlineTip };
